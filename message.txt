@@ -1,0 +1,3 @@
+Hi {connection_name}
+Could you kindly direct me to any appropriate entry-level positions available at {company_name}?
+Resume: {resume_link}
