@@ -46,12 +46,13 @@ sign_in_button = driver.find_element(By.ID, "organic-div")
 sign_in_button.click()
 
 #list of keywords
-search_keywords = ["software", "talent"]
+search_keywords = ["engineer"]
 try:
     WebDriverWait(driver, Constants.PEOPLE_SEARCH_TIMEOUT).until(EC.visibility_of_element_located((By.CLASS_NAME, "org-people__insights-container")))
     keyword_search_field = driver.find_element(By.ID, "people-search-keywords")
 except TimeoutException:
     print("Timeout: Search results did not load within the specified time.")
+
 
 #search people for every keyword
 for key in search_keywords:
@@ -65,11 +66,13 @@ for key in search_keywords:
         print("Timeout: Search results did not load within the specified time.")
 
     #send connection to 5 people for every keyword
-    sent_connection_counter = 0
+    sent_connection_counter = Constants.CONNECTION_COUNT
     
     for button in connect_buttons:
         if "Connect" in button.get_attribute("innerHTML"):
             sent_connection_counter += 1
+            if(sent_connection_counter == Constants.TOTAL_CONNECTION):
+                exit
             button.click()
             try:
                 WebDriverWait(driver, Constants.CONNECT_MODAL_TIMEOUT).until(EC.visibility_of_element_located((By.ID, "send-invite-modal")))
@@ -96,8 +99,7 @@ for key in search_keywords:
 
             send_button = driver.find_element(By.CSS_SELECTOR, "[aria-label='Send now']")
             send_button.click()
-            if(sent_connection_counter == Constants.TOTAL_CONNECTION):
-                break
+            
 
 
 driver.quit()
